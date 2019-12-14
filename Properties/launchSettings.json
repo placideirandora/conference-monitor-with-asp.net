@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "api_with_asp.net": {
+    "ConferenceMonitorApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "applicationUrl": "https://localhost:3000;http://localhost:4000",

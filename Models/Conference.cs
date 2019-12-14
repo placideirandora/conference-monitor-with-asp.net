@@ -1,4 +1,4 @@
-namespace api_with_asp.net.Models
+namespace ConferenceMonitorApi.Models
 {
     public class Conference {
         public int Id { get; set; }

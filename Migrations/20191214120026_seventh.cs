@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace api_with_asp.net.Migrations
+namespace ConferenceMonitorApi.Migrations
 {
-    public partial class sixth : Migration
+    public partial class seventh : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

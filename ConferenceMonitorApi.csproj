@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <RootNamespace>api_with_asp.net</RootNamespace>
+    <RootNamespace>ConferenceMonitorApi</RootNamespace>
   </PropertyGroup>
 
 

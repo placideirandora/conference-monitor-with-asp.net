@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using api_with_asp.net.Models;
+using ConferenceMonitorApi.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace api_with_asp.net.Controllers {
+namespace ConferenceMonitorApi.Controllers {
     [Route("api/v1/[controller]")]
     public class ConferencesController : ControllerBase {
         private readonly ConfDbContext _context;

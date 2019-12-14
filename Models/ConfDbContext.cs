@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace api_with_asp.net.Models {
+namespace ConferenceMonitorApi.Models {
     public class ConfDbContext : DbContext {
         public DbSet<Conference> Conferences { get; set; }
 
