@@ -14,6 +14,10 @@ namespace ConferenceMonitorApi.Controllers {
             _context = context;
         }
 
+        public ConferencesController()
+        {
+        }
+
         [HttpPost]
         public async Task<ActionResult<Conference>> PostConference([FromBody] Conference conference) {
             _context.Conferences.Add(conference);
