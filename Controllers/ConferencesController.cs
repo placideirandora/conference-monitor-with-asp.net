@@ -3,6 +3,7 @@ using api_with_asp.net.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace api_with_asp.net.Controllers {
     [Route("api/[controller]")]
@@ -26,7 +27,7 @@ namespace api_with_asp.net.Controllers {
         public async Task<ActionResult<Conference>> GetConferences() {
             var conferences = await _context.Conferences.ToListAsync();
 
-            if (conferences == null) {
+            if (!conferences.Any()) {
                 return this.StatusCode(StatusCodes.Status404NotFound, "No Conferences Found At The Moment");
             }
 
