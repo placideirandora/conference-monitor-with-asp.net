@@ -5,11 +5,6 @@
     <RootNamespace>ConferenceMonitorApi</RootNamespace>
   </PropertyGroup>
 
-
-  <ItemGroup>
-  </ItemGroup>
-
-
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
