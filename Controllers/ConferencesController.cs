@@ -33,5 +33,16 @@ namespace api_with_asp.net.Controllers {
             return Ok(conferences);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Conference>> GetConference(int id) {
+            var conference = await _context.Conferences.FindAsync(id);
+
+            if (conference == null) {
+                return this.StatusCode(StatusCodes.Status404NotFound, "Conference Not Found");
+            }
+
+            return Ok(conference);
+        }
+
     }
 }
