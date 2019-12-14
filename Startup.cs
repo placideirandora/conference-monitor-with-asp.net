@@ -20,7 +20,7 @@ namespace api_with_asp.net
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>();
-            services.AddScoped<Conference>();
+            services.AddControllers();
             services.AddMvc(option => option.EnableEndpointRouting = false);
         }
 
