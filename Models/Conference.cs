@@ -6,6 +6,7 @@ namespace api_with_asp.net.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Theme { get; set; }
+        public string Location { get; set; }
         public DateTime StartDateAndTime { get; set; }
         public DateTime EndDateAndTime { get; set; }
         public string Description { get; set; }
