@@ -59,5 +59,18 @@ namespace api_with_asp.net.Controllers {
 
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Conference>> PutConference(int id, [FromBody] Conference conference) {
+            if (id != conference.Id){
+                 return this.StatusCode(StatusCodes.Status400BadRequest, "Ids Do not Match");
+            }
+
+            _context.Entry(conference).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return this.StatusCode(StatusCodes.Status200OK, "Conference Updated");
+
+        }
     }
 }
