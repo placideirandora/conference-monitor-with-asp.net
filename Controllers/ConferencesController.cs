@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using api_with_asp.net.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_with_asp.net.Controllers {
     [Route("api/[controller]")]
@@ -18,12 +19,18 @@ namespace api_with_asp.net.Controllers {
             await _context.SaveChangesAsync();
 
             // return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference );
-            return this.StatusCode(StatusCodes.Status201Created, "Conference Registered!");
+            return this.StatusCode(StatusCodes.Status201Created, "Conference Registered");
         }
 
         [HttpGet]
-        public IActionResult GetConferences() {
-            return Ok(new { Id = 1, ConferenceName = "DefCon 2020" });
+        public async Task<ActionResult<Conference>> GetConferences() {
+            var conferences = await _context.Conferences.ToListAsync();
+
+            if (conferences == null) {
+                return this.StatusCode(StatusCodes.Status404NotFound, "No Conferences Found At The Moment");
+            }
+
+            return Ok(conferences);
         }
 
     }
