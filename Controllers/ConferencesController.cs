@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace api_with_asp.net.Controllers {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class ConferencesController : ControllerBase {
         private readonly ConfDbContext _context;
 
