@@ -1,3 +1,4 @@
+using api_with_asp.net.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,8 @@ namespace api_with_asp.net
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>();
+            services.AddScoped<Conference>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
         }
 
