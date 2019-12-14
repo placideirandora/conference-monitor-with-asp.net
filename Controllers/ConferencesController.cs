@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 namespace api_with_asp.net.Controllers {
     [Route("api/[controller]")]
     public class ConferencesController : ControllerBase {
-        private readonly AppDbContext _context;
+        private readonly ConfDbContext _context;
 
-        public ConferencesController(AppDbContext context) {
+        public ConferencesController(ConfDbContext context) {
             _context = context;
         }
 
