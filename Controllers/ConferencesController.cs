@@ -44,5 +44,20 @@ namespace api_with_asp.net.Controllers {
             return Ok(conference);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Conference>> DeleteConference(int id) {
+            var conference = await _context.Conferences.FindAsync(id);
+
+            if (conference == null) {
+                return this.StatusCode(StatusCodes.Status404NotFound, "Conference Not Found");
+            }
+
+            _context.Conferences.Remove(conference);
+            await _context.SaveChangesAsync();
+
+            return this.StatusCode(StatusCodes.Status200OK, "Conference Deleted");
+
+        }
+
     }
 }
