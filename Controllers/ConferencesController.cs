@@ -20,7 +20,6 @@ namespace api_with_asp.net.Controllers {
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference );
-            // return this.StatusCode(StatusCodes.Status201Created, "Conference Registered");
         }
 
         [HttpGet]
