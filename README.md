@@ -1,5 +1,5 @@
 # CONFERENCE MONITOR (ASP.NET CORE)
-A back-end REST API web application for publishing trending conferences.
+A back-end REST Web API for publishing and managing conferences.
 
 ## GETTING STARTED
 
