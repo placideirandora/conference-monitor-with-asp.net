@@ -8,6 +8,7 @@ using System.Linq;
 namespace ConferenceMonitorApi.Controllers {
     // Base route
     [Route("api/v1/[controller]")]
+    [ApiController]
     public class ConferencesController : ControllerBase {
         private readonly DatabaseContext _context;
 
