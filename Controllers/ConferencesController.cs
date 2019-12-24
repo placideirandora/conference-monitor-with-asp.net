@@ -19,10 +19,14 @@ namespace ConferenceMonitorApi.Controllers {
         // Handle POST request of a conference
         [HttpPost]
         public async Task<ActionResult<Conference>> PostConference([FromBody] Conference conference) {
-            _context.Conferences.Add(conference);
-            await _context.SaveChangesAsync();
+            if (ModelState.IsValid) {
+                _context.Conferences.Add(conference);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference );
+                return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference );
+            } else {
+                return this.StatusCode(StatusCodes.Status400BadRequest, ModelState);
+            }
         }
 
         // Handle GET request of all conferences
@@ -68,15 +72,18 @@ namespace ConferenceMonitorApi.Controllers {
         // Handle PUT request of updating a specific conference
         [HttpPut("{id}")]
         public async Task<ActionResult<Conference>> PutConference(int id, [FromBody] Conference conference) {
-            if (id != conference.Id){
-                 return this.StatusCode(StatusCodes.Status400BadRequest, "Ids Do not Match");
+            if (id != conference.Id) return this.StatusCode(StatusCodes.Status400BadRequest, "Ids Do not Match");
+
+
+            if (ModelState.IsValid) {
+                _context.Entry(conference).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+
+                return this.StatusCode(StatusCodes.Status200OK, "Conference Updated");
+            } else {
+                return this.StatusCode(StatusCodes.Status400BadRequest, ModelState);
             }
-
-            _context.Entry(conference).State = EntityState.Modified;
-
-            await _context.SaveChangesAsync();
-
-            return this.StatusCode(StatusCodes.Status200OK, "Conference Updated");
 
         }
     }
