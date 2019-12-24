@@ -38,3 +38,17 @@ $ dotnet ef database update (apply migrations)
 ```
 $ dotnet watch run (start the app in watch mode)
 ```
+
+### Testing The Web API Endpoints
+
+- Use **Postman** or **Insomnia** to test the API endpoint routes
+
+### API Endpoint Routes
+
+| METHOD | ROUTE | DESCRIPTION | ACCESS |
+|--------|----------------|-------------|-----------------|
+|  POST  | /api/v1/Conferences | Register a Conference | Public |
+|  GET  | /api/v1/Conferences | Retrieve All Conferences | Public |
+|  GET  | /api/v1/Conferences/{Id} | Retrieve a Specific Conference | Public |
+|  PUT  | /api/v1/Conferences/{Id} | Update a Specific Conference | Public |
+|  DELETE | /api/v1/Conferences/{Id} | Delete a Specific Conference | Public |
