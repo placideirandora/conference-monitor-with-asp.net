@@ -9,10 +9,10 @@ namespace ConferenceMonitorApi.Controllers {
     // Base route
     [Route("api/v1/[controller]")]
     public class ConferencesController : ControllerBase {
-        private readonly ConfDbContext _context;
+        private readonly DatabaseContext _context;
 
         // Construct a field for accessing the database
-        public ConferencesController(ConfDbContext context) {
+        public ConferencesController(DatabaseContext context) {
             _context = context;
         }
 
