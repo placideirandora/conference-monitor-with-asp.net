@@ -18,11 +18,23 @@ $ Open the extensions tab, find and install the C# extension by OmniSharp.
 $ Extension name: C# for Visual Studio Code (powered by OmniSharp).
 ```
 
-### Open The Project With Visual Studio Code
+### Install Required NuGet Packages
 
 ```
-$ Install required NuGet packages: dotnet restore
+$ Run the following command with VSCode Terminal: dotnet restore
+```
+
+### Make And Apply The Migrations
+
+```
+$ dotnet ef migrations add Initial (make migrations)
 ```
 ```
-$ Start the project: dotnet run
+$ dotnet ef database update (apply migrations)
+```
+
+### Start The App
+
+```
+$ dotnet watch run (start the app in watch mode)
 ```
