@@ -1,5 +1,6 @@
 namespace ConferenceMonitorApi.Models
-{
+{   
+    // Create a model for conferences table
     public class Conference {
         public int Id { get; set; }
         public string Name { get; set; }

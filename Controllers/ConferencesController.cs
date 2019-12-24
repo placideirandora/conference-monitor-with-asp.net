@@ -6,18 +6,17 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace ConferenceMonitorApi.Controllers {
+    // Base route
     [Route("api/v1/[controller]")]
     public class ConferencesController : ControllerBase {
         private readonly ConfDbContext _context;
 
+        // Construct a field for accessing the database
         public ConferencesController(ConfDbContext context) {
             _context = context;
         }
 
-        public ConferencesController()
-        {
-        }
-
+        // Handle POST request of a conference
         [HttpPost]
         public async Task<ActionResult<Conference>> PostConference([FromBody] Conference conference) {
             _context.Conferences.Add(conference);
@@ -26,6 +25,7 @@ namespace ConferenceMonitorApi.Controllers {
             return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference );
         }
 
+        // Handle GET request of all conferences
         [HttpGet]
         public async Task<ActionResult<Conference>> GetConferences() {
             var conferences = await _context.Conferences.ToListAsync();
@@ -37,6 +37,7 @@ namespace ConferenceMonitorApi.Controllers {
             return Ok(conferences);
         }
 
+        // Handle GET request of a specific conference
         [HttpGet("{id}")]
         public async Task<ActionResult<Conference>> GetConference(int id) {
             var conference = await _context.Conferences.FindAsync(id);
@@ -48,6 +49,7 @@ namespace ConferenceMonitorApi.Controllers {
             return Ok(conference);
         }
 
+        // Handle DELETE request of a specific conference
         [HttpDelete("{id}")]
         public async Task<ActionResult<Conference>> DeleteConference(int id) {
             var conference = await _context.Conferences.FindAsync(id);
@@ -63,6 +65,7 @@ namespace ConferenceMonitorApi.Controllers {
 
         }
 
+        // Handle PUT request of updating a specific conference
         [HttpPut("{id}")]
         public async Task<ActionResult<Conference>> PutConference(int id, [FromBody] Conference conference) {
             if (id != conference.Id){
