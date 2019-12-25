@@ -47,8 +47,8 @@ $ dotnet watch run (start the app in watch mode)
 
 | METHOD | ROUTE | DESCRIPTION | ACCESS |
 |--------|----------------|-------------|-----------------|
-|  POST  | /api/v1/Conferences | Register a Conference | Public |
+|  POST  | /api/v1/Conferences | Register a Conference | Protected |
 |  GET  | /api/v1/Conferences | Retrieve All Conferences | Public |
 |  GET  | /api/v1/Conferences/{Id} | Retrieve a Specific Conference | Public |
-|  PUT  | /api/v1/Conferences/{Id} | Update a Specific Conference | Public |
-|  DELETE | /api/v1/Conferences/{Id} | Delete a Specific Conference | Public |
+|  PUT  | /api/v1/Conferences/{Id} | Update a Specific Conference | Protected |
+|  DELETE | /api/v1/Conferences/{Id} | Delete a Specific Conference | Protected |
