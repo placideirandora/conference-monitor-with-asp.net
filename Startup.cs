@@ -1,3 +1,4 @@
+using ConferenceMonitorApi.Data;
 using ConferenceMonitorApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +21,7 @@ namespace ConferenceMonitorApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DatabaseContext>();
+            services.AddScoped<IConferenceRepository, ConferenceRepository<DatabaseContext>>();
             services.AddControllers();
             services.AddMvc(option => option.EnableEndpointRouting = false);
         }
