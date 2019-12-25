@@ -14,11 +14,13 @@ namespace ConferenceMonitorApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserRepository _repository;
+        private readonly IAuthRepository _authRepository;
 
         // Construct a field for accessing the repository
-        public AuthController(IUserRepository repository)
+        public AuthController(IUserRepository repository, IAuthRepository authRepository)
         {
             _repository = repository;
+            _authRepository = authRepository;
         }
 
         // Handle POST request of user registration
@@ -30,11 +32,14 @@ namespace ConferenceMonitorApi.Controllers
                 user.Password = Crypto.HashPassword(user.Password);
                 user.ConfirmPassword = Crypto.HashPassword(user.ConfirmPassword);
 
-                try {
+                try
+                {
                     await _repository.CreateAsync<User>(user);
 
                     return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-                } catch (DbUpdateException) {
+                }
+                catch (DbUpdateException)
+                {
                     return this.StatusCode(StatusCodes.Status409Conflict, "User with Id " + user.Id + " already exists");
                 }
             }
@@ -42,6 +47,21 @@ namespace ConferenceMonitorApi.Controllers
             {
                 return this.StatusCode(StatusCodes.Status400BadRequest, ModelState);
             }
+        }
+
+        // Handle POST request of user login
+        [HttpPost, Route("SignIn")]
+        public async Task<ActionResult<User>> LogUserIn([FromBody] SignIn user)
+        {
+            var result = await _authRepository.AuthenticateAsync(user.Email, user.Password);
+
+            if (result == null) return Unauthorized(new { message = $"Incorrect Email: {user.Email}" });
+
+            var verifyPassword = Crypto.VerifyHashedPassword(result.Password, user.Password);
+
+            if (!verifyPassword) return Unauthorized(new { message = "Incorrect Password" });
+
+            return Ok(new { message = "Signed In Successfully" });
         }
 
         // Return a registered user
