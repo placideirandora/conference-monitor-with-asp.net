@@ -41,7 +41,7 @@ $ dotnet watch run (start the app in watch mode)
 
 ### Testing The Web API Endpoints
 
-- Use **Postman** or **Insomnia** to test the API endpoint routes
+- Use **Postman** or **Insomnia** to test the API endpoints.
 
 ### API Endpoint Routes
 
