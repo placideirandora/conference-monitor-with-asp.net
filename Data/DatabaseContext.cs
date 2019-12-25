@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConferenceMonitorApi.Models {
     public class DatabaseContext : DbContext {
-        // Create database
+        // Create table
         public DbSet<Conference> Conferences { get; set; }
 
         // Override database configuration 
