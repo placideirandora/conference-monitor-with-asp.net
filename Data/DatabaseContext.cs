@@ -8,7 +8,7 @@ namespace ConferenceMonitorApi.Models {
 
         // Override database configuration 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseSqlite("Filename=./Conference.db");
+            optionsBuilder.UseSqlite("Filename=./ConferenceMonitor.db");
         }
     }
 }
