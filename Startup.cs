@@ -57,6 +57,7 @@ namespace ConferenceMonitorApi
             }
 
             app.UseMvc();
+            app.UseAuthentication();
         }
     }
 }
