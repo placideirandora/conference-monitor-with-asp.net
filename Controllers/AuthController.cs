@@ -21,7 +21,7 @@ namespace ConferenceMonitorApi.Controllers
             _repository = repository;
         }
 
-        // Handle POST request of a user
+        // Handle POST request of user registration
         [HttpPost, Route("SignUp")]
         public async Task<ActionResult<User>> PostUser([FromBody] User user)
         {
