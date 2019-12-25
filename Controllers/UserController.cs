@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using ConferenceMonitorApi.Data;
 using Microsoft.AspNetCore.Authorization;
+using CryptoHelper;
 
 namespace ConferenceMonitorApi.Controllers
 {
@@ -28,6 +29,9 @@ namespace ConferenceMonitorApi.Controllers
         {
             if (ModelState.IsValid)
             {
+                user.Password = Crypto.HashPassword(user.Password);
+                user.ConfirmPassword = Crypto.HashPassword(user.ConfirmPassword);
+
                 try {
                     await _repository.CreateAsync<User>(user);
 
