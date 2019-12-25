@@ -26,6 +26,7 @@ namespace ConferenceMonitorApi
             services.AddControllers();
             services.AddDbContext<DatabaseContext>();
             services.AddScoped<IConferenceRepository, ConferenceRepository<DatabaseContext>>();
+            services.AddScoped<IUserRepository, UserRepository<DatabaseContext>>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
 
             services.AddAuthentication(opt =>
