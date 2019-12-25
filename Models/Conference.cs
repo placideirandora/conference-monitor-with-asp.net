@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ConferenceMonitorApi.Data;
 
 namespace ConferenceMonitorApi.Models
 {   
     // Create and validate the model for conferences table
     [Table("Conferences")]
-    public class Conference {
+    public class Conference : IConference {
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Conference Name is required")]
