@@ -27,9 +27,13 @@ namespace ConferenceMonitorApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _repository.CreateAsync<Conference>(conference);
+                try {
+                    await _repository.CreateAsync<Conference>(conference);
 
-                return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference);
+                    return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference);
+                } catch (DbUpdateException) {
+                    return this.StatusCode(StatusCodes.Status409Conflict, "Conference with Id " + conference.Id + " already exists");
+                }
             }
             else
             {
