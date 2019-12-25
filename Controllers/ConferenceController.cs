@@ -12,12 +12,12 @@ namespace ConferenceMonitorApi.Controllers
     // Base route
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class ConferencesController : ControllerBase
+    public class ConferenceController : ControllerBase
     {
         private readonly IConferenceRepository _repository;
 
         // Construct a field for accessing the repository
-        public ConferencesController(IConferenceRepository repository)
+        public ConferenceController(IConferenceRepository repository)
         {
             _repository = repository;
         }
@@ -43,18 +43,18 @@ namespace ConferenceMonitorApi.Controllers
             }
         }
 
-        // Handle GET request of all conferences
+        // Handle GET request of all Conference
         [HttpGet]
-        public async Task<ActionResult<Conference>> GetConferences()
+        public async Task<ActionResult<Conference>> GetConference()
         {
-            var conferences = await _repository.FindAllAsync<Conference>();
+            var Conference = await _repository.FindAllAsync<Conference>();
 
-            if (!conferences.Any())
+            if (!Conference.Any())
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, "No Conferences Found At The Moment");
+                return this.StatusCode(StatusCodes.Status404NotFound, "No Conference Found At The Moment");
             }
 
-            return this.StatusCode(StatusCodes.Status200OK, conferences);
+            return this.StatusCode(StatusCodes.Status200OK, Conference);
         }
 
         // Handle GET request of a specific conference
