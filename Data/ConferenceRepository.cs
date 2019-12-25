@@ -28,13 +28,13 @@ namespace ConferenceMonitorApi
             _ = await this.dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<T>> FindAll<T>() where T : class
+        public async Task<List<T>> FindAllAsync<T>() where T : class
         {
             return await this.dbContext.Set<T>().ToListAsync();
 
         }
 
-        public async Task<T> FindById<T>(int id) where T : class
+        public async Task<T> FindByIdAsync<T>(int id) where T : class
         {
             return await this.dbContext.Set<T>().FindAsync(id);
 

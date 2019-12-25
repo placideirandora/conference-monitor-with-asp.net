@@ -41,7 +41,7 @@ namespace ConferenceMonitorApi.Controllers
         [HttpGet]
         public async Task<ActionResult<Conference>> GetConferences()
         {
-            var conferences = await _repository.FindAll<Conference>();
+            var conferences = await _repository.FindAllAsync<Conference>();
 
             if (!conferences.Any())
             {
@@ -55,7 +55,7 @@ namespace ConferenceMonitorApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Conference>> GetConference(int id)
         {
-            var conference = await _repository.FindById<Conference>(id);
+            var conference = await _repository.FindByIdAsync<Conference>(id);
 
             if (conference == null)
             {
@@ -69,7 +69,7 @@ namespace ConferenceMonitorApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Conference>> DeleteConference(int id)
         {
-            var conference = await _repository.FindById<Conference>(id);
+            var conference = await _repository.FindByIdAsync<Conference>(id);
 
             if (conference == null) return this.StatusCode(StatusCodes.Status404NotFound, "Conference Not Found");
 
