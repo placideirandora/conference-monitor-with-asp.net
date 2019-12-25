@@ -52,7 +52,7 @@ namespace ConferenceMonitorApi.Controllers
                 return this.StatusCode(StatusCodes.Status404NotFound, "No Conferences Found At The Moment");
             }
 
-            return Ok(conferences);
+            return this.StatusCode(StatusCodes.Status200OK, conferences);
         }
 
         // Handle GET request of a specific conference
@@ -66,7 +66,7 @@ namespace ConferenceMonitorApi.Controllers
                 return this.StatusCode(StatusCodes.Status404NotFound, "Conference Not Found");
             }
 
-            return Ok(conference);
+            return this.StatusCode(StatusCodes.Status200OK, conference);
         }
 
         // Handle DELETE request of a specific conference
