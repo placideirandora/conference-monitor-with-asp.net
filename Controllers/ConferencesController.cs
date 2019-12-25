@@ -4,38 +4,48 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using ConferenceMonitorApi.Data;
+using System;
 
-namespace ConferenceMonitorApi.Controllers {
+namespace ConferenceMonitorApi.Controllers
+{
     // Base route
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class ConferencesController : ControllerBase {
-        private readonly DatabaseContext _context;
+    public class ConferencesController : ControllerBase
+    {
+        private readonly IConferenceRepository _repository;
 
         // Construct a field for accessing the database
-        public ConferencesController(DatabaseContext context) {
-            _context = context;
+        public ConferencesController(IConferenceRepository repository)
+        {
+            _repository = repository;
         }
 
         // Handle POST request of a conference
         [HttpPost]
-        public async Task<ActionResult<Conference>> PostConference([FromBody] Conference conference) {
-            if (ModelState.IsValid) {
-                _context.Conferences.Add(conference);
-                await _context.SaveChangesAsync();
+        public async Task<ActionResult<Conference>> PostConference([FromBody] Conference conference)
+        {
+            if (ModelState.IsValid)
+            {
+                await _repository.CreateAsync<Conference>(conference);
 
-                return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference );
-            } else {
+                return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference);
+            }
+            else
+            {
                 return this.StatusCode(StatusCodes.Status400BadRequest, ModelState);
             }
         }
 
         // Handle GET request of all conferences
         [HttpGet]
-        public async Task<ActionResult<Conference>> GetConferences() {
-            var conferences = await _context.Conferences.ToListAsync();
+        public async Task<ActionResult<Conference>> GetConferences()
+        {
+            var conferences = await _repository.FindAll<Conference>();
 
-            if (!conferences.Any()) {
+            if (!conferences.Any())
+            {
                 return this.StatusCode(StatusCodes.Status404NotFound, "No Conferences Found At The Moment");
             }
 
@@ -44,10 +54,12 @@ namespace ConferenceMonitorApi.Controllers {
 
         // Handle GET request of a specific conference
         [HttpGet("{id}")]
-        public async Task<ActionResult<Conference>> GetConference(int id) {
-            var conference = await _context.Conferences.FindAsync(id);
+        public async Task<ActionResult<Conference>> GetConference(int id)
+        {
+            var conference = await _repository.FindById<Conference>(id);
 
-            if (conference == null) {
+            if (conference == null)
+            {
                 return this.StatusCode(StatusCodes.Status404NotFound, "Conference Not Found");
             }
 
@@ -56,33 +68,38 @@ namespace ConferenceMonitorApi.Controllers {
 
         // Handle DELETE request of a specific conference
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Conference>> DeleteConference(int id) {
-            var conference = await _context.Conferences.FindAsync(id);
+        public async Task<ActionResult<Conference>> DeleteConference(int id)
+        {
+            var conference = await _repository.FindById<Conference>(id);
 
-            if (conference == null) {
-                return this.StatusCode(StatusCodes.Status404NotFound, "Conference Not Found");
-            }
+            if (conference == null) return this.StatusCode(StatusCodes.Status404NotFound, "Conference Not Found");
 
-            _context.Conferences.Remove(conference);
-            await _context.SaveChangesAsync();
+            await _repository.DeleteAsync<Conference>(conference);
 
             return this.StatusCode(StatusCodes.Status200OK, "Conference Deleted");
-
         }
 
         // Handle PUT request of updating a specific conference
         [HttpPut("{id}")]
-        public async Task<ActionResult<Conference>> PutConference(int id, [FromBody] Conference conference) {
+        public async Task<ActionResult<Conference>> PutConference(int id, [FromBody] Conference conference)
+        {
             if (id != conference.Id) return this.StatusCode(StatusCodes.Status400BadRequest, "Ids Do not Match");
 
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _repository.UpdateAsync<Conference>(id, conference);
 
-            if (ModelState.IsValid) {
-                _context.Entry(conference).State = EntityState.Modified;
-
-                await _context.SaveChangesAsync();
-
-                return this.StatusCode(StatusCodes.Status200OK, "Conference Updated");
-            } else {
+                    return this.StatusCode(StatusCodes.Status200OK, "Conference Updated");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return this.StatusCode(StatusCodes.Status404NotFound, "Conference Not Found");
+                }
+            }
+            else
+            {
                 return this.StatusCode(StatusCodes.Status400BadRequest, ModelState);
             }
 
