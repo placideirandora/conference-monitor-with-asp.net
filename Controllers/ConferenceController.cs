@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using ConferenceMonitorApi.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConferenceMonitorApi.Controllers
 {
@@ -22,6 +23,7 @@ namespace ConferenceMonitorApi.Controllers
         }
 
         // Handle POST request of a conference
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Conference>> PostConference([FromBody] Conference conference)
         {
@@ -70,6 +72,7 @@ namespace ConferenceMonitorApi.Controllers
         }
 
         // Handle DELETE request of a specific conference
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Conference>> DeleteConference(int id)
         {
@@ -83,6 +86,7 @@ namespace ConferenceMonitorApi.Controllers
         }
 
         // Handle PUT request of updating a specific conference
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<Conference>> PutConference(int id, [FromBody] Conference conference)
         {
