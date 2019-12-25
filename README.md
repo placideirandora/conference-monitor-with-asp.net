@@ -24,7 +24,7 @@ $ Extension name: C# for Visual Studio Code (powered by OmniSharp).
 $ Run the following command with VSCode Terminal: dotnet restore
 ```
 
-### Make And Apply The Migrations
+### Make And Apply Migrations
 
 ```
 $ dotnet ef migrations add Initial (make migrations)
