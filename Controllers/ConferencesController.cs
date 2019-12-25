@@ -15,7 +15,7 @@ namespace ConferenceMonitorApi.Controllers
     {
         private readonly IConferenceRepository _repository;
 
-        // Construct a field for accessing the database
+        // Construct a field for accessing the repository
         public ConferencesController(IConferenceRepository repository)
         {
             _repository = repository;

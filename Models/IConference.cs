@@ -1,5 +1,6 @@
 namespace ConferenceMonitorApi.Data
-{
+{   
+    // Define an interface for the model properties
     public interface IConference
     {
         int Id { get; set; }
