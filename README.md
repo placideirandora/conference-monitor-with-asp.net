@@ -47,6 +47,8 @@ $ dotnet watch run (start the app in watch mode)
 
 | METHOD | ROUTE | DESCRIPTION | ACCESS |
 |--------|----------------|-------------|-----------------|
+|  POST  | /api/v1/Auth/SignUp | User Registration | Public |
+|  POST  | /api/v1/Auth/SignIn | User Login | Public |
 |  POST  | /api/v1/Conferences | Register a Conference | Protected |
 |  GET  | /api/v1/Conferences | Retrieve All Conferences | Public |
 |  GET  | /api/v1/Conferences/{Id} | Retrieve a Specific Conference | Public |
