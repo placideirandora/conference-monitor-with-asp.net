@@ -13,13 +13,13 @@ namespace ConferenceMonitorApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserRepository _repository;
+        private readonly IUserRepository _userRepository;
         private readonly IAuthRepository _authRepository;
 
         // Construct a field for accessing the repository
-        public AuthController(IUserRepository repository, IAuthRepository authRepository)
+        public AuthController(IUserRepository userRepository, IAuthRepository authRepository)
         {
-            _repository = repository;
+            _userRepository = userRepository;
             _authRepository = authRepository;
         }
 
@@ -34,7 +34,7 @@ namespace ConferenceMonitorApi.Controllers
 
                 try
                 {
-                    await _repository.CreateAsync<User>(user);
+                    await _authRepository.RegisterAsync(user);
 
                     return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
                 }
@@ -67,7 +67,7 @@ namespace ConferenceMonitorApi.Controllers
         // Return a registered user
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _repository.FindByIdAsync<User>(id);
+            var user = await _userRepository.FindByIdAsync<User>(id);
 
             return this.StatusCode(StatusCodes.Status200OK, user);
         }
