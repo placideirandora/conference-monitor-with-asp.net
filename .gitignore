@@ -2,3 +2,4 @@ bin
 obj
 ConferenceMonitor.db
 Migrations
+appsettings.json
