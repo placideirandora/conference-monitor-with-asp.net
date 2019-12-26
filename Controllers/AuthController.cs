@@ -78,10 +78,10 @@ namespace ConferenceMonitorApi.Controllers
             SigningCredentials sC = new SigningCredentials(sSK, SecurityAlgorithms.HmacSha256);
 
             // Define roles
-            var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Email, user.Email)
-        };
+            var claims = new List<Claim>();
+
+            claims.Add(new Claim("UserID", $"{result.Id}"));
+            claims.Add(new Claim("UserEmail", $"{result.Email}"));
 
             // Define JWT required options
             var tokenOptions = new JwtSecurityToken(
