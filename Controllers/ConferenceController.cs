@@ -84,9 +84,13 @@ namespace ConferenceMonitorApi.Controllers
 
             if (conference == null) return NotFound(new { message = "Conference not found" });
 
+            var idClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserID", StringComparison.InvariantCultureIgnoreCase));
+
+            if (Convert.ToInt32(idClaim.Value) != conference.PublisherID) return Unauthorized(new { message = $"You can only delete conferences that you published. This one ({conference.Name}) was published by {conference.PublisherEmail}" });
+
             await _repository.DeleteAsync<Conference>(conference);
 
-            return Ok(new { message = "Conference deleted"});
+            return Ok(new { message = $"Conference ({conference.Name}) deleted"});
         }
 
         // Handle protected PUT request of updating a specific conference
@@ -95,6 +99,10 @@ namespace ConferenceMonitorApi.Controllers
         public async Task<ActionResult<Conference>> PutConference(int id, [FromBody] Conference conference)
         {
             if (id != conference.Id) return BadRequest(new { message = "IDs do not match", parameterID = id, conferenceID = conference.Id });
+
+            var idClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserID", StringComparison.InvariantCultureIgnoreCase));
+
+            if (Convert.ToInt32(idClaim.Value) != conference.PublisherID) return Unauthorized(new { message = $"You can only update conferences that you published. This one ({conference.Name}) was published by {conference.PublisherEmail}" });
 
             if (ModelState.IsValid)
             {
