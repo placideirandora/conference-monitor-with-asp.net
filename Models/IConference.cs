@@ -1,5 +1,3 @@
-using ConferenceMonitorApi.Models;
-
 namespace ConferenceMonitorApi.Data
 {   
     // Define an interface for the model properties

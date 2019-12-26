@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using ConferenceMonitorApi.Models;
-
 namespace ConferenceMonitorApi {
     // Define an Interface for registering a user
     public interface IUser

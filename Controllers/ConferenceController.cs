@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ConferenceMonitorApi.Models;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using ConferenceMonitorApi.Data;

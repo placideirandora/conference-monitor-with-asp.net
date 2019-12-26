@@ -4,7 +4,6 @@ using CryptoHelper;
 using Microsoft.AspNetCore.Mvc;
 using ConferenceMonitorApi.Models;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ConferenceMonitorApi.Data;
 using System.Security.Claims;

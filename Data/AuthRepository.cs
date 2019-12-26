@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using ConferenceMonitorApi.Models;
-using CryptoHelper;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConferenceMonitorApi
