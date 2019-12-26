@@ -23,7 +23,7 @@ namespace ConferenceMonitorApi.Controllers
         }
 
         // Handle POST request of a conference
-        [Authorize]
+        [Authorize("Bearer")]
         [HttpPost]
         public async Task<ActionResult<Conference>> PostConference([FromBody] Conference conference)
         {
@@ -72,7 +72,7 @@ namespace ConferenceMonitorApi.Controllers
         }
 
         // Handle DELETE request of a specific conference
-        [Authorize]
+        [Authorize("Bearer")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Conference>> DeleteConference(int id)
         {
@@ -86,7 +86,7 @@ namespace ConferenceMonitorApi.Controllers
         }
 
         // Handle PUT request of updating a specific conference
-        [Authorize]
+        [Authorize("Bearer")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Conference>> PutConference(int id, [FromBody] Conference conference)
         {
