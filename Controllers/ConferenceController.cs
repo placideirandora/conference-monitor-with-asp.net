@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using ConferenceMonitorApi.Data;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace ConferenceMonitorApi.Controllers
 {
@@ -28,14 +29,17 @@ namespace ConferenceMonitorApi.Controllers
         public async Task<ActionResult<Conference>> PostConference([FromBody] Conference conference)
         {
             if (ModelState.IsValid)
-            {
-                try {
+            {   
+                var idClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserID", StringComparison.InvariantCultureIgnoreCase));
+                var emailClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserEmail", StringComparison.InvariantCultureIgnoreCase));
+
+                    conference.PublisherID = Convert.ToInt32(idClaim.Value);
+                    conference.PublisherEmail = emailClaim.Value;
+
                     await _repository.CreateAsync<Conference>(conference);
 
                     return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference);
-                } catch (DbUpdateException) {
-                    return Conflict(new { message = $"Conference with Id {conference.Id} already exists" });
-                }
+                
             }
             else
             {
