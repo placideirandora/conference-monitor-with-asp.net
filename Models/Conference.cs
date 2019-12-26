@@ -38,7 +38,6 @@ namespace ConferenceMonitorApi.Models
         public decimal TicketPrice { get; set; }
 
         [ForeignKey(nameof(User))]
-
         public int PublisherID { get; set; }
 
         public string PublisherEmail { get; set; }
