@@ -45,7 +45,7 @@ namespace ConferenceMonitorApi
 
                     ValidIssuer = "http://localhost:4000",
                     ValidAudience = "http://localhost:4000",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("s3cR3t!123K1y!"))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("s3cR3t!123K1y!&s3cR3t!123K1y!"))
                 };
             });
         }
