@@ -2,6 +2,7 @@ using System.Text;
 using ConferenceMonitorApi.Data;
 using ConferenceMonitorApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,13 @@ namespace ConferenceMonitorApi
             services.AddScoped<IUserRepository, UserRepository<DatabaseContext>>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
 
             services.AddAuthentication(opt =>
             {
