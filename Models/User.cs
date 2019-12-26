@@ -8,6 +8,7 @@ namespace ConferenceMonitorApi.Models
     [Table("Users")]
     public class User : IUser
     {   
+        // Implement the interface properties
         public int Id { get; set; }
 
         [Required(ErrorMessage = "First Name is required")]

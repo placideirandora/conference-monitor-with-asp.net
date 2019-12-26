@@ -22,7 +22,7 @@ namespace ConferenceMonitorApi.Controllers
             _repository = repository;
         }
 
-        // Handle POST request of a conference
+        // Handle protected POST request of a conference
         [Authorize("Bearer")]
         [HttpPost]
         public async Task<ActionResult<Conference>> PostConference([FromBody] Conference conference)
@@ -71,7 +71,7 @@ namespace ConferenceMonitorApi.Controllers
             return Ok(new { message = "Conference found", conference });
         }
 
-        // Handle DELETE request of a specific conference
+        // Handle protected DELETE request of a specific conference
         [Authorize("Bearer")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Conference>> DeleteConference(int id)
@@ -85,7 +85,7 @@ namespace ConferenceMonitorApi.Controllers
             return Ok(new { message = "Conference deleted"});
         }
 
-        // Handle PUT request of updating a specific conference
+        // Handle protected PUT request of updating a specific conference
         [Authorize("Bearer")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Conference>> PutConference(int id, [FromBody] Conference conference)

@@ -1,6 +1,7 @@
 using System;
 
 namespace ConferenceMonitorApi {
+    // Define an Interface for registering a user
     public interface IUser
     {
         int Id { get; set; }

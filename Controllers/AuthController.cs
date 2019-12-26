@@ -22,7 +22,7 @@ namespace ConferenceMonitorApi.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IAuthRepository _authRepository;
 
-        // Construct a field for accessing the repository
+        // Construct fields for accessing the repositories
         public AuthController(IUserRepository userRepository, IAuthRepository authRepository)
         {
             _userRepository = userRepository;
@@ -67,14 +67,17 @@ namespace ConferenceMonitorApi.Controllers
 
             if (!verifyPassword) return Unauthorized(new { message = "Incorrect Password" });
 
+            // Define and encode the security key
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("s3cR3t!123K1y!&s3cR3t!123K1y!"));
             var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
+            // Define roles
             var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Email, user.Email)
         };
 
+            // Define JWT required options
             var tokenOptions = new JwtSecurityToken(
                 issuer: "http://localhost:4000",
                 audience: "http://localhost:4000",
@@ -82,7 +85,8 @@ namespace ConferenceMonitorApi.Controllers
                 expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: signingCredentials
             );
- 
+            
+            // Generate JWT token
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             return Ok(new { message = "Signed In", Token = tokenString });
         }

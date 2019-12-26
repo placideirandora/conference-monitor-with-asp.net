@@ -31,6 +31,7 @@ namespace ConferenceMonitorApi
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
 
+            // Define JWT authorization policy
             services.AddAuthorization(auth =>
             {
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
@@ -38,6 +39,7 @@ namespace ConferenceMonitorApi
                     .RequireAuthenticatedUser().Build());
             });
 
+            // Define JWT authentication 
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -67,6 +69,7 @@ namespace ConferenceMonitorApi
             }
 
             app.UseMvc();
+            // Allow JWT authentication
             app.UseAuthentication();
         }
     }

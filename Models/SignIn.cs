@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace ConferenceMonitorApi.Models {
+    // Implement the interface properties
     public class SignIn : ISignIn {
         [Display(Name = "Email Address")]
         [Required(ErrorMessage = "Email Address is required")]
