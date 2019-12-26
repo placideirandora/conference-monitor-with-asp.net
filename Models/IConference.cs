@@ -1,3 +1,5 @@
+using ConferenceMonitorApi.Models;
+
 namespace ConferenceMonitorApi.Data
 {   
     // Define an interface for the model properties
@@ -12,5 +14,7 @@ namespace ConferenceMonitorApi.Data
         string Description { get; set; }
         string Organizer { get; set; }
         decimal TicketPrice { get; set; }
+        int PublisherID { get; set; }
+        string PublisherEmail { get; set; }
     }
 }

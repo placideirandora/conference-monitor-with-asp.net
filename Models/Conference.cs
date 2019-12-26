@@ -36,5 +36,11 @@ namespace ConferenceMonitorApi.Models
         public string Organizer { get; set; }
 
         public decimal TicketPrice { get; set; }
+
+        [ForeignKey(nameof(User))]
+
+        public int PublisherID { get; set; }
+
+        public string PublisherEmail { get; set; }
     }
 }

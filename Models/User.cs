@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -39,5 +40,7 @@ namespace ConferenceMonitorApi.Models
         public string Role { get; set; } = "standard";
 
         public string Registered { get; set; } = DateTime.Now.ToLocalTime().ToString("F");
+
+        public ICollection<Conference> Conferences { get; set; }
     }
 }

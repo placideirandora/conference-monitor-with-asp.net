@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using ConferenceMonitorApi.Models;
 
 namespace ConferenceMonitorApi {
     // Define an Interface for registering a user
@@ -12,5 +14,6 @@ namespace ConferenceMonitorApi {
         string ConfirmPassword { get; set; }
         string Role { get; set; }
         string Registered { get; set; }
+        ICollection<Conference> Conferences { get; set; }
     }
 }
