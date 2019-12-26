@@ -49,8 +49,8 @@ $ dotnet watch run (start the app in watch mode)
 |--------|----------------|-------------|-----------------|
 |  POST  | /api/v1/Auth/SignUp | User Registration | Public |
 |  POST  | /api/v1/Auth/SignIn | User Login | Public |
-|  POST  | /api/v1/Conferences | Publish a Conference | Protected |
-|  GET  | /api/v1/Conferences | Retrieve All Conferences | Public |
-|  GET  | /api/v1/Conferences/{Id} | Retrieve a Specific Conference | Public |
-|  PUT  | /api/v1/Conferences/{Id} | Update a Specific Conference | Protected |
-|  DELETE | /api/v1/Conferences/{Id} | Delete a Specific Conference | Protected |
+|  POST  | /api/v1/Conference | Publish a Conference | Protected |
+|  GET  | /api/v1/Conference | Retrieve All Conferences | Public |
+|  GET  | /api/v1/Conference/{Id} | Retrieve a Specific Conference | Public |
+|  PUT  | /api/v1/Conference/{Id} | Update a Specific Conference | Protected |
+|  DELETE | /api/v1/Conference/{Id} | Delete a Specific Conference | Protected |
