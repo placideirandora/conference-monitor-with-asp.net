@@ -14,6 +14,5 @@ namespace ConferenceMonitorApi {
         string ConfirmPassword { get; set; }
         string Role { get; set; }
         string Registered { get; set; }
-        ICollection<Conference> Conferences { get; set; }
     }
 }
