@@ -5,6 +5,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ConferenceMonitorApi.Data;
 using CryptoHelper;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
+using System.Text;
+using System;
 
 namespace ConferenceMonitorApi.Controllers
 {
@@ -61,7 +67,24 @@ namespace ConferenceMonitorApi.Controllers
 
             if (!verifyPassword) return Unauthorized(new { message = "Incorrect Password" });
 
-            return Ok(new { message = "Signed In Successfully" });
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("s3cR3t!123K1y!&s3cR3t!123K1y!"));
+            var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Email, user.Email)
+        };
+
+            var tokenOptions = new JwtSecurityToken(
+                issuer: "http://localhost:4000",
+                audience: "http://localhost:4000",
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(60),
+                signingCredentials: signingCredentials
+            );
+ 
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            return Ok(new { message = "Signed In", Token = tokenString });
         }
 
         // Return a registered user
