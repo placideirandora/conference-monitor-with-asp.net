@@ -46,7 +46,7 @@ namespace ConferenceMonitorApi.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    return this.StatusCode(StatusCodes.Status409Conflict, "User with Id " + user.Id + " already exists");
+                    return Conflict(new { message = $"User with Id {user.Id} already exists" });
                 }
             }
             else
@@ -92,7 +92,7 @@ namespace ConferenceMonitorApi.Controllers
         {
             var user = await _userRepository.FindByIdAsync<User>(id);
 
-            return this.StatusCode(StatusCodes.Status200OK, user);
+            return Ok(new { message = "User Registered", user });
         }
     }
 }

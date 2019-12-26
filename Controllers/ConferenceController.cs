@@ -34,12 +34,12 @@ namespace ConferenceMonitorApi.Controllers
 
                     return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference);
                 } catch (DbUpdateException) {
-                    return this.StatusCode(StatusCodes.Status409Conflict, "Conference with Id " + conference.Id + " already exists");
+                    return Conflict(new { message = $"Conference with Id {conference.Id} already exists" });
                 }
             }
             else
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, ModelState);
+                return BadRequest(new { message = "Validation Errors", ModelState });
             }
         }
 
@@ -47,14 +47,14 @@ namespace ConferenceMonitorApi.Controllers
         [HttpGet]
         public async Task<ActionResult<Conference>> GetConference()
         {
-            var Conference = await _repository.FindAllAsync<Conference>();
+            var Conferences = await _repository.FindAllAsync<Conference>();
 
-            if (!Conference.Any())
+            if (!Conferences.Any())
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, "No Conference Found At The Moment");
+                return NotFound(new { message = "No conferences found at the moment" });
             }
 
-            return this.StatusCode(StatusCodes.Status200OK, Conference);
+            return Ok(new { message = "Conferences found", Conferences });
         }
 
         // Handle GET request of a specific conference
@@ -65,10 +65,10 @@ namespace ConferenceMonitorApi.Controllers
 
             if (conference == null)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, "Conference Not Found");
+                return NotFound(new { message = "Conference not found" });
             }
 
-            return this.StatusCode(StatusCodes.Status200OK, conference);
+            return Ok(new { message = "Conference found", conference });
         }
 
         // Handle DELETE request of a specific conference
@@ -78,11 +78,11 @@ namespace ConferenceMonitorApi.Controllers
         {
             var conference = await _repository.FindByIdAsync<Conference>(id);
 
-            if (conference == null) return this.StatusCode(StatusCodes.Status404NotFound, "Conference Not Found");
+            if (conference == null) return NotFound(new { message = "Conference not found" });
 
             await _repository.DeleteAsync<Conference>(conference);
 
-            return this.StatusCode(StatusCodes.Status200OK, "Conference Deleted");
+            return Ok(new { message = "Conference deleted"});
         }
 
         // Handle PUT request of updating a specific conference
@@ -90,7 +90,7 @@ namespace ConferenceMonitorApi.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<Conference>> PutConference(int id, [FromBody] Conference conference)
         {
-            if (id != conference.Id) return this.StatusCode(StatusCodes.Status400BadRequest, "Ids Do not Match");
+            if (id != conference.Id) return BadRequest(new { message = "IDs do not match", parameterID = id, conferenceID = conference.Id });
 
             if (ModelState.IsValid)
             {
@@ -98,16 +98,16 @@ namespace ConferenceMonitorApi.Controllers
                 {
                     await _repository.UpdateAsync<Conference>(id, conference);
 
-                    return this.StatusCode(StatusCodes.Status200OK, "Conference Updated");
+                    return Ok(new { message = "Conference updated", conference });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    return this.StatusCode(StatusCodes.Status404NotFound, "Conference Not Found");
+                    return NotFound(new { message = "Conference not found" });
                 }
             }
             else
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, ModelState);
+                return BadRequest(new { message = "Validation Errors", ModelState });
             }
 
         }
