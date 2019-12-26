@@ -16,14 +16,6 @@ namespace ConferenceMonitorApi
             dbContext = context;
         }
 
-        // Method for registering a user
-        public async Task CreateAsync<T>(T entity) where T : class
-        {
-            this.dbContext.Set<T>().Add(entity);
-
-            _ = await this.dbContext.SaveChangesAsync();
-        }
-
         // Method for deleting a user
         public async Task DeleteAsync<T>(T entity) where T : class
         {
