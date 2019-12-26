@@ -14,12 +14,12 @@ namespace ConferenceMonitorApi
 {
     public class Startup
     {
+        public IConfiguration _configuration { get; } 
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -53,9 +53,9 @@ namespace ConferenceMonitorApi
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
-                    ValidIssuer = "http://localhost:4000",
-                    ValidAudience = "http://localhost:4000",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("s3cR3t!123K1y!&s3cR3t!123K1y!"))
+                    ValidIssuer = _configuration.GetSection("Credentials").GetSection("Issuer").Value,
+                    ValidAudience = _configuration.GetSection("Credentials").GetSection("Audience").Value,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Credentials").GetSection("SecretKey").Value))
                 };
             });
         }

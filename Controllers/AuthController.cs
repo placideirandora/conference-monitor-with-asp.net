@@ -1,16 +1,17 @@
+using System;
+using System.Text;
+using CryptoHelper;
 using Microsoft.AspNetCore.Mvc;
 using ConferenceMonitorApi.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ConferenceMonitorApi.Data;
-using CryptoHelper;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System.Text;
-using System;
 
 namespace ConferenceMonitorApi.Controllers
 {
@@ -21,12 +22,14 @@ namespace ConferenceMonitorApi.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IAuthRepository _authRepository;
+        private readonly IConfiguration _configuration;
 
-        // Construct fields for accessing the repositories
-        public AuthController(IUserRepository userRepository, IAuthRepository authRepository)
+        // Construct fields for accessing the repositories and credentials
+        public AuthController(IUserRepository userRepository, IAuthRepository authRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
             _authRepository = authRepository;
+            _configuration = configuration;
         }
 
         // Handle POST request of user registration
@@ -51,7 +54,7 @@ namespace ConferenceMonitorApi.Controllers
             }
             else
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, ModelState);
+                return BadRequest(new { message = "Validation Errors", ModelState });
             }
         }
 
@@ -67,9 +70,12 @@ namespace ConferenceMonitorApi.Controllers
 
             if (!verifyPassword) return Unauthorized(new { message = "Incorrect Password" });
 
-            // Define and encode the security key
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("s3cR3t!123K1y!&s3cR3t!123K1y!"));
-            var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            string secretKey = _configuration.GetSection("Credentials").GetSection("SecretKey").Value;
+            string issuer = _configuration.GetSection("Credentials").GetSection("Issuer").Value;
+            string audience = _configuration.GetSection("Credentials").GetSection("Audience").Value;
+    
+            SymmetricSecurityKey sSK = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            SigningCredentials sC = new SigningCredentials(sSK, SecurityAlgorithms.HmacSha256);
 
             // Define roles
             var claims = new List<Claim>
@@ -79,13 +85,13 @@ namespace ConferenceMonitorApi.Controllers
 
             // Define JWT required options
             var tokenOptions = new JwtSecurityToken(
-                issuer: "http://localhost:4000",
-                audience: "http://localhost:4000",
+                issuer: issuer,
+                audience: audience,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(60),
-                signingCredentials: signingCredentials
+                signingCredentials: sC
             );
-            
+
             // Generate JWT token
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             return Ok(new { message = "Signed In", Token = tokenString });
