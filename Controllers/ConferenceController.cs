@@ -31,7 +31,7 @@ namespace ConferenceMonitorApi.Controllers
         // Handle protected POST request of a conference
         [Authorize("Bearer")]
         [HttpPost]
-        public async Task<ActionResult<Conference>> PostConference([FromBody] Conference conference)
+        public async Task<ActionResult<Conference>> PublishConference([FromBody] Conference conference)
         {
             if (ModelState.IsValid)
             {   
@@ -43,7 +43,7 @@ namespace ConferenceMonitorApi.Controllers
 
                     await _repository.CreateAsync<Conference>(conference);
 
-                    return CreatedAtAction(nameof(GetConference), new { id = conference.Id }, conference);
+                    return CreatedAtAction(nameof(GetSingleConference), new { id = conference.Id }, conference);
                 
             }
             else
@@ -58,7 +58,7 @@ namespace ConferenceMonitorApi.Controllers
 
         // Handle GET request of all Conference
         [HttpGet]
-        public async Task<ActionResult<Conference>> GetConference()
+        public async Task<ActionResult<Conference>> GetAllConferences()
         {
             List<Conference> Conferences = await _repository.FindAllAsync<Conference>();
 
@@ -76,7 +76,7 @@ namespace ConferenceMonitorApi.Controllers
 
         // Handle GET request of a specific conference
         [HttpGet("{id}")]
-        public async Task<ActionResult<Conference>> GetConference(int id)
+        public async Task<ActionResult<Conference>> GetSingleConference(int id)
         {
             Conference conference = await _repository.FindByIdAsync<Conference>(id);
 
@@ -117,7 +117,7 @@ namespace ConferenceMonitorApi.Controllers
         // Handle protected PUT request of updating a specific conference
         [Authorize("Bearer")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<Conference>> PutConference(int id, [FromBody] Conference conference)
+        public async Task<ActionResult<Conference>> UpdateConference(int id, [FromBody] Conference conference)
         {
             if (id != conference.Id) return BadRequest(new { message = "IDs do not match", parameterID = id, conferenceID = conference.Id });
 

@@ -37,7 +37,7 @@ namespace ConferenceMonitorApi.Controllers
 
         // Handle POST request of user registration
         [HttpPost, Route("SignUp")]
-        public async Task<ActionResult<User>> PostUser([FromBody] User user)
+        public async Task<ActionResult<User>> RegisterUser([FromBody] User user)
         {
             if (ModelState.IsValid)
             {
