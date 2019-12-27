@@ -11,7 +11,6 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ConferenceMonitorApi.Controllers
 {
@@ -49,7 +48,9 @@ namespace ConferenceMonitorApi.Controllers
                 {
                     await _authRepository.RegisterAsync(user);
 
-                    return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+                    object registeredUser = new { user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.Registered };
+
+                    return StatusCode(201, registeredUser);
                 }
                 catch (DbUpdateException)
                 {
@@ -103,16 +104,6 @@ namespace ConferenceMonitorApi.Controllers
             // Generate JWT token
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             return Ok(new { message = "Signed In", Token = tokenString });
-        }
-
-        // Return a registered user
-        [Authorize("Bearer")]
-        [HttpGet]
-        public async Task<ActionResult<User>> GetUser(int id)
-        {
-            var user = await _userRepository.FindByIdAsync<User>(id);
-
-            return Ok(new { message = "User Registered", user });
         }
     }
 }
