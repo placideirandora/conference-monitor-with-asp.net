@@ -56,7 +56,7 @@ namespace ConferenceMonitorApi
                 };
             });
             services.AddSwaggerGen(option => {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Conference Monitor API", Version = "v3" });
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Conference Monitor API", Version = "v1" });
             });
         }
 
