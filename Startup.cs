@@ -14,7 +14,7 @@ namespace ConferenceMonitorApi
 {
     public class Startup
     {
-        public IConfiguration _configuration { get; } 
+        public IConfiguration _configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
@@ -30,16 +30,12 @@ namespace ConferenceMonitorApi
             services.AddScoped<IUserRepository, UserRepository<DatabaseContext>>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
-
-            // Define JWT authorization policy
             services.AddAuthorization(auth =>
             {
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
                     .RequireAuthenticatedUser().Build());
             });
-
-            // Define JWT authentication 
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -69,7 +65,6 @@ namespace ConferenceMonitorApi
             }
 
             app.UseMvc();
-            // Allow JWT authentication
             app.UseAuthentication();
         }
     }
