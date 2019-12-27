@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace ConferenceMonitorApi
 {
@@ -30,16 +31,16 @@ namespace ConferenceMonitorApi
             services.AddScoped<IUserRepository, UserRepository<DatabaseContext>>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
-            services.AddAuthorization(auth =>
+            services.AddAuthorization(option =>
             {
-                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                option.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
                     .RequireAuthenticatedUser().Build());
             });
-            services.AddAuthentication(opt =>
+            services.AddAuthentication(option =>
             {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -53,6 +54,9 @@ namespace ConferenceMonitorApi
                     ValidAudience = _configuration.GetSection("Credentials").GetSection("Audience").Value,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Credentials").GetSection("SecretKey").Value))
                 };
+            });
+            services.AddSwaggerGen(option => {
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Conference Monitor API", Version = "v1" });
             });
         }
 
