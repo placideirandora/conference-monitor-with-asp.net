@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using ConferenceMonitorApi.Data;
 using ConferenceMonitorApi.Models;
@@ -55,8 +56,22 @@ namespace ConferenceMonitorApi
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Credentials").GetSection("SecretKey").Value))
                 };
             });
-            services.AddSwaggerGen(option => {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Conference Monitor API", Version = "v1" });
+            services.AddSwaggerGen(option =>
+            {
+                option.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Conference Monitor API",
+                    Version = "v1",
+                    Description = "A back-end RESTful Web API for publishing and managing conferences.",
+                    Contact = new OpenApiContact{
+                        Name = "Placide IRANDORA",
+                        Url = new Uri("https://twitter.com/placideirandora")
+                    },
+                    License = new OpenApiLicense{
+                        Name = "GNU GENERAL PUBLIC LICENCE v3",
+                        Url = new Uri("https://www.gnu.org/licenses/gpl-3.0.en.html")
+                    }
+                });
             });
         }
 
@@ -70,10 +85,11 @@ namespace ConferenceMonitorApi
 
             app.UseMvc();
             app.UseAuthentication();
-            
+
             // Enable and configure Swagger middleware to serve API Documentation on a specific endpoint
             app.UseSwagger();
-            app.UseSwaggerUI(option => {
+            app.UseSwaggerUI(option =>
+            {
                 option.SwaggerEndpoint("/swagger/v1/swagger.json", "Conference Monitor API v1");
             });
         }
