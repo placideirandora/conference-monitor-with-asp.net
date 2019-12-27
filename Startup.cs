@@ -30,8 +30,8 @@ namespace ConferenceMonitorApi
         {
             services.AddControllers();
             services.AddDbContext<DatabaseContext>();
-            services.AddScoped<IConferenceRepository, ConferenceRepository<DatabaseContext>>();
-            services.AddScoped<IUserRepository, UserRepository<DatabaseContext>>();
+            services.AddScoped<IConferenceRepository, ConferenceRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddAuthorization(option =>
