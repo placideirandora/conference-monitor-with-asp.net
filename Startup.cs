@@ -56,7 +56,7 @@ namespace ConferenceMonitorApi
                 };
             });
             services.AddSwaggerGen(option => {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Conference Monitor API", Version = "v1" });
+                option.SwaggerDoc("v1", new OpenApiInfo { Title = "Conference Monitor API", Version = "v3" });
             });
         }
 
@@ -70,6 +70,12 @@ namespace ConferenceMonitorApi
 
             app.UseMvc();
             app.UseAuthentication();
+            
+            // Enable and configure Swagger middleware to serve API Documentation on a specific endpoint
+            app.UseSwagger();
+            app.UseSwaggerUI(option => {
+                option.SwaggerEndpoint("/swagger/v1/swagger.json", "Conference Monitor API v1");
+            });
         }
     }
 }
