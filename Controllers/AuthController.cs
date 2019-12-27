@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConferenceMonitorApi.Controllers
 {
@@ -97,6 +98,8 @@ namespace ConferenceMonitorApi.Controllers
         }
 
         // Return a registered user
+        [Authorize("Bearer")]
+        [HttpGet]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _userRepository.FindByIdAsync<User>(id);
