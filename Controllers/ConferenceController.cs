@@ -6,6 +6,8 @@ using System.Linq;
 using ConferenceMonitorApi.Data;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace ConferenceMonitorApi.Controllers
 {
@@ -33,8 +35,8 @@ namespace ConferenceMonitorApi.Controllers
         {
             if (ModelState.IsValid)
             {   
-                var idClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserID", StringComparison.InvariantCultureIgnoreCase));
-                var emailClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserEmail", StringComparison.InvariantCultureIgnoreCase));
+                Claim idClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserID", StringComparison.InvariantCultureIgnoreCase));
+                Claim emailClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserEmail", StringComparison.InvariantCultureIgnoreCase));
 
                     conference.PublisherID = Convert.ToInt32(idClaim.Value);
                     conference.PublisherEmail = emailClaim.Value;
@@ -58,7 +60,7 @@ namespace ConferenceMonitorApi.Controllers
         [HttpGet]
         public async Task<ActionResult<Conference>> GetConference()
         {
-            var Conferences = await _repository.FindAllAsync<Conference>();
+            List<Conference> Conferences = await _repository.FindAllAsync<Conference>();
 
             if (!Conferences.Any())
             {
@@ -76,7 +78,7 @@ namespace ConferenceMonitorApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Conference>> GetConference(int id)
         {
-            var conference = await _repository.FindByIdAsync<Conference>(id);
+            Conference conference = await _repository.FindByIdAsync<Conference>(id);
 
             if (conference == null)
             {
@@ -95,11 +97,11 @@ namespace ConferenceMonitorApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Conference>> DeleteConference(int id)
         {
-            var conference = await _repository.FindByIdAsync<Conference>(id);
+            Conference conference = await _repository.FindByIdAsync<Conference>(id);
 
             if (conference == null) return NotFound(new { message = "Conference not found" });
 
-            var idClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserID", StringComparison.InvariantCultureIgnoreCase));
+            Claim idClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserID", StringComparison.InvariantCultureIgnoreCase));
 
             if (Convert.ToInt32(idClaim.Value) != conference.PublisherID) return Unauthorized(new { message = $"You can only delete conferences that you published. This one ({conference.Name}) was published by {conference.PublisherEmail}" });
 
@@ -119,7 +121,7 @@ namespace ConferenceMonitorApi.Controllers
         {
             if (id != conference.Id) return BadRequest(new { message = "IDs do not match", parameterID = id, conferenceID = conference.Id });
 
-            var idClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserID", StringComparison.InvariantCultureIgnoreCase));
+            Claim idClaim = User.Claims.FirstOrDefault(claim => claim.Type.Equals("UserID", StringComparison.InvariantCultureIgnoreCase));
 
             if (Convert.ToInt32(idClaim.Value) != conference.PublisherID) return Unauthorized(new { message = $"You can only update conferences that you published. This one ({conference.Name}) was published by {conference.PublisherEmail}" });
 

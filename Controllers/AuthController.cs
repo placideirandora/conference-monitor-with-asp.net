@@ -41,7 +41,7 @@ namespace ConferenceMonitorApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                var foundUser = await _authRepository.FindByEmailAsync(user.Email);
+                User foundUser = await _authRepository.FindByEmailAsync(user.Email);
 
                 if (foundUser != null) return Conflict(new { message = $"User with Email ({user.Email}) is already registered" });
 
@@ -75,11 +75,11 @@ namespace ConferenceMonitorApi.Controllers
         [HttpPost, Route("SignIn")]
         public async Task<ActionResult<User>> LogUserIn([FromBody] SignIn user)
         {
-            var foundUser = await _authRepository.FindByEmailAsync(user.Email);
+            User foundUser = await _authRepository.FindByEmailAsync(user.Email);
 
             if (foundUser == null) return Unauthorized(new { message = $"Incorrect Email: {user.Email}" });
 
-            var verifyPassword = Crypto.VerifyHashedPassword(foundUser.Password, user.Password);
+            bool verifyPassword = Crypto.VerifyHashedPassword(foundUser.Password, user.Password);
 
             if (!verifyPassword) return Unauthorized(new { message = "Incorrect Password" });
 
@@ -91,13 +91,13 @@ namespace ConferenceMonitorApi.Controllers
             SigningCredentials sC = new SigningCredentials(sSK, SecurityAlgorithms.HmacSha256);
 
             // Define custom claims
-            var claims = new List<Claim>();
+            List<Claim> claims = new List<Claim>();
 
             claims.Add(new Claim("UserID", $"{foundUser.Id}"));
             claims.Add(new Claim("UserEmail", $"{foundUser.Email}"));
 
             // Define JWT required options
-            var tokenOptions = new JwtSecurityToken(
+            JwtSecurityToken jst = new JwtSecurityToken(
                 issuer: issuer,
                 audience: audience,
                 claims: claims,
@@ -106,7 +106,7 @@ namespace ConferenceMonitorApi.Controllers
             );
 
             // Generate JWT token
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            string tokenString = new JwtSecurityTokenHandler().WriteToken(jst);
             return Ok(new { message = "Signed In", Token = tokenString });
         }
     }
