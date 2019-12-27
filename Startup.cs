@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using ConferenceMonitorApi.Data;
 using ConferenceMonitorApi.Models;
@@ -78,6 +80,11 @@ namespace ConferenceMonitorApi
                         Name = "Authorization",
                         Type = SecuritySchemeType.ApiKey 
                     });
+
+                    // Set the comments path for the Swagger JSON and UI.
+                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    option.IncludeXmlComments(xmlPath);
             });
         }
 
