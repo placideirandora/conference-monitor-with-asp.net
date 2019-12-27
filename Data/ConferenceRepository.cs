@@ -1,17 +1,18 @@
 using ConferenceMonitorApi.Data;
+using ConferenceMonitorApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ConferenceMonitorApi
 {
-    public class ConferenceRepository<TDbContext> : IConferenceRepository where TDbContext : DbContext
+    public class ConferenceRepository : IConferenceRepository
     {   
         // Define database context field
-        protected TDbContext dbContext;
+        protected DatabaseContext dbContext;
 
         // Construct the database context
-        public ConferenceRepository(TDbContext context)
+        public ConferenceRepository(DatabaseContext context)
         {
             dbContext = context;
         }
