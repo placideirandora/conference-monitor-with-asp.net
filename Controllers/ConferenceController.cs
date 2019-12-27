@@ -22,6 +22,10 @@ namespace ConferenceMonitorApi.Controllers
             _repository = repository;
         }
 
+        /// <summary>
+        /// Publish a Conference (protected)
+        /// </summary>
+
         // Handle protected POST request of a conference
         [Authorize("Bearer")]
         [HttpPost]
@@ -46,6 +50,10 @@ namespace ConferenceMonitorApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieve All Conferences (public)
+        /// </summary>
+
         // Handle GET request of all Conference
         [HttpGet]
         public async Task<ActionResult<Conference>> GetConference()
@@ -60,6 +68,10 @@ namespace ConferenceMonitorApi.Controllers
             return Ok(new { message = "Conferences found", Conferences });
         }
 
+        /// <summary>
+        /// Retrieve a Specific Conference (public)
+        /// </summary>
+
         // Handle GET request of a specific conference
         [HttpGet("{id}")]
         public async Task<ActionResult<Conference>> GetConference(int id)
@@ -73,6 +85,10 @@ namespace ConferenceMonitorApi.Controllers
 
             return Ok(new { message = "Conference found", conference });
         }
+
+        /// <summary>
+        /// Delete a Specific Conference (protected)
+        /// </summary>
 
         // Handle protected DELETE request of a specific conference
         [Authorize("Bearer")]
@@ -91,6 +107,10 @@ namespace ConferenceMonitorApi.Controllers
 
             return Ok(new { message = $"Conference ({conference.Name}) deleted"});
         }
+
+        /// <summary>
+        /// Update a Specific Conference (protected)
+        /// </summary>
 
         // Handle protected PUT request of updating a specific conference
         [Authorize("Bearer")]

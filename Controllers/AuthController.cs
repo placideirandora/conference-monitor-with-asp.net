@@ -32,6 +32,10 @@ namespace ConferenceMonitorApi.Controllers
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// User Registration (public)
+        /// </summary>
+
         // Handle POST request of user registration
         [HttpPost, Route("SignUp")]
         public async Task<ActionResult<User>> PostUser([FromBody] User user)
@@ -57,6 +61,10 @@ namespace ConferenceMonitorApi.Controllers
                 return BadRequest(new { message = "Validation Errors", ModelState });
             }
         }
+
+        /// <summary>
+        /// User Login (public)
+        /// </summary>
 
         // Handle POST request of user login
         [HttpPost, Route("SignIn")]
