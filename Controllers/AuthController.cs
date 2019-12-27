@@ -41,6 +41,10 @@ namespace ConferenceMonitorApi.Controllers
         {
             if (ModelState.IsValid)
             {
+                var foundUser = await _authRepository.FindByEmailAsync(user.Email);
+
+                if (foundUser != null) return Conflict(new { message = $"User with Email ({user.Email}) is already registered" });
+
                 user.Password = Crypto.HashPassword(user.Password);
                 user.ConfirmPassword = Crypto.HashPassword(user.ConfirmPassword);
 
