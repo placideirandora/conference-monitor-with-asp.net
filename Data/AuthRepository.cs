@@ -23,7 +23,7 @@ namespace ConferenceMonitorApi
         }
 
         // Method for authenticating a user
-        public async Task<User> AuthenticateAsync(string email, string password)
+        public async Task<User> FindByEmailAsync(string email)
         {
             return await _dbContext.Users.SingleOrDefaultAsync(user => user.Email == email);
 

@@ -71,11 +71,11 @@ namespace ConferenceMonitorApi.Controllers
         [HttpPost, Route("SignIn")]
         public async Task<ActionResult<User>> LogUserIn([FromBody] SignIn user)
         {
-            var result = await _authRepository.AuthenticateAsync(user.Email, user.Password);
+            var foundUser = await _authRepository.FindByEmailAsync(user.Email);
 
-            if (result == null) return Unauthorized(new { message = $"Incorrect Email: {user.Email}" });
+            if (foundUser == null) return Unauthorized(new { message = $"Incorrect Email: {user.Email}" });
 
-            var verifyPassword = Crypto.VerifyHashedPassword(result.Password, user.Password);
+            var verifyPassword = Crypto.VerifyHashedPassword(foundUser.Password, user.Password);
 
             if (!verifyPassword) return Unauthorized(new { message = "Incorrect Password" });
 
@@ -89,8 +89,8 @@ namespace ConferenceMonitorApi.Controllers
             // Define custom claims
             var claims = new List<Claim>();
 
-            claims.Add(new Claim("UserID", $"{result.Id}"));
-            claims.Add(new Claim("UserEmail", $"{result.Email}"));
+            claims.Add(new Claim("UserID", $"{foundUser.Id}"));
+            claims.Add(new Claim("UserEmail", $"{foundUser.Email}"));
 
             // Define JWT required options
             var tokenOptions = new JwtSecurityToken(
