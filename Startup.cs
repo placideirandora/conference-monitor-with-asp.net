@@ -72,6 +72,12 @@ namespace ConferenceMonitorApi
                         Url = new Uri("https://www.gnu.org/licenses/gpl-3.0.en.html")
                     }
                 });
+                option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+                        In = ParameterLocation.Header, 
+                        Description = "Insert your JWT (format: [Bearer][token value] ex: Bearer eyJh.eyJVc2.eyJVc2 ) into the value field below, and click on Authorize to be able to access the protected endpoints.",
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.ApiKey 
+                    });
             });
         }
 
