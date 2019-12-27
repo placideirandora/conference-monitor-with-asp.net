@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace ConferenceMonitorApi.Data
 {   
-    // Define an interface for the repository functionalities
+    // Define an interface for the conference repository functionalities
     public interface IConferenceRepository
     {
         Task<List<T>> FindAllAsync<T>() where T : class;
