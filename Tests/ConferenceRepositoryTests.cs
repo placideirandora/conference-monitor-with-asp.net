@@ -3,13 +3,16 @@ using ConferenceMonitorApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 using System.Linq;
+using Microsoft.Data.Sqlite;
 
 namespace ConferenceMonitorApi
 {
     public class ConferenceControllerTest
     {
+        static SqliteConnectionStringBuilder sCSB = new SqliteConnectionStringBuilder { DataSource = ":memory" };
+        static SqliteConnection sc = new SqliteConnection(sCSB.ToString());
         static DbContextOptions<DatabaseContext> options = new DbContextOptionsBuilder<DatabaseContext>()
-            .UseInMemoryDatabase("ConferenceMonitorTest")
+            .UseSqlite(sc)
             .Options;
 
         DatabaseContext context = new DatabaseContext(options);
@@ -18,6 +21,8 @@ namespace ConferenceMonitorApi
         public void GetAllConferences_Conferences_ConferencesAreRetrieved()
         {
             //Arrange  
+            context.Database.EnsureCreated();
+
             context.Conferences.Add(new Conference()
             {
                 Id = 1,
@@ -63,6 +68,8 @@ namespace ConferenceMonitorApi
         public void GetSingleConference_Conference_ConferenceIsRetrieved()
         {
             // Arrange
+            context.Database.EnsureCreated();
+            
             ConferenceRepository cr = new ConferenceRepository(context);
             int Id = 1;
 
