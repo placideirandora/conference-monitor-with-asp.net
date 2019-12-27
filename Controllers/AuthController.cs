@@ -76,7 +76,7 @@ namespace ConferenceMonitorApi.Controllers
             SymmetricSecurityKey sSK = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             SigningCredentials sC = new SigningCredentials(sSK, SecurityAlgorithms.HmacSha256);
 
-            // Define roles
+            // Define custom claims
             var claims = new List<Claim>();
 
             claims.Add(new Claim("UserID", $"{result.Id}"));
