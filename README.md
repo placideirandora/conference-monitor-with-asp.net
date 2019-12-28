@@ -53,7 +53,7 @@ $ dotnet run
 |  PUT  | /api/v1/Conference/{Id} | Update a Specific Conference | Protected |
 |  DELETE | /api/v1/Conference/{Id} | Delete a Specific Conference | Protected |
 
-### Run Unit Tests
+### Run The Tests
 
 ```
 $ dotnet test
