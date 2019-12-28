@@ -11,39 +11,37 @@ $ git clone https://github.com/placideirandora/conference-monitor-with-asp.net
 
 ### Install C# Extension
 
-```
-$ Open the extensions tab, find and install the C# extension by OmniSharp. 
-```
-```
-$ Extension name: C# for Visual Studio Code (powered by OmniSharp).
-```
+- Open the extensions tab, find and install the **C#** extension by OmniSharp. 
+
+- Extension name: **C# for Visual Studio Code (powered by OmniSharp)**
+
 
 ### Install Required NuGet Packages
 
 ```
-$ Run the following command with VSCode Terminal: dotnet restore
+$ dotnet restore
 ```
 
 ### Make And Apply Migrations
 
 ```
-$ dotnet ef migrations add Initial (make migrations)
+$ dotnet ef migrations add Initial 
 ```
 ```
-$ dotnet ef database update (apply migrations)
+$ dotnet ef database update 
 ```
 
 ### Start The App
 
 ```
-$ dotnet watch run (start the app in watch mode)
+$ dotnet run 
 ```
 
-### Testing The Web API Endpoints
+### Test The Web API Endpoints
 
-- Local Host: navigate to *https://localhost:3000/swagger/index.html* and test the endpoints.
+- Local Host: **https://localhost:3000/swagger/index.html**
 
-### API Endpoint Routes
+### API Endpoints
 
 | METHOD | ROUTE | DESCRIPTION | ACCESS |
 |--------|----------------|-------------|-----------------|
@@ -55,8 +53,8 @@ $ dotnet watch run (start the app in watch mode)
 |  PUT  | /api/v1/Conference/{Id} | Update a Specific Conference | Protected |
 |  DELETE | /api/v1/Conference/{Id} | Delete a Specific Conference | Protected |
 
-### Unit Tests
+### Run Unit Tests
 
 ```
-$ Run the following command with VSCode Terminal: dotnet test
+$ dotnet test
 ```
