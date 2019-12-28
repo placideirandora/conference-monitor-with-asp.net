@@ -18,22 +18,18 @@ namespace ConferenceMonitorApi
             .UseSqlite(sc)
             .Options;
 
-        DatabaseContext context = new DatabaseContext(options);
+        DatabaseContext _context = new DatabaseContext(options);
 
         IConferenceRepository _conferenceRepository;
         ConferenceController _conferenceController;
 
-        public ConferenceControllerTest()
-        {
-            context.Database.OpenConnection();
-            context.Database.EnsureCreated();
-        }
-
         [Fact]
-        public async void PublishConference_ValidConferencePassed_ReturnsCreatedAtResult()
+        public async void PublishConference_ValidConferencePassed_ReturnsCreatedAtActionResult()
         {
             // Arrange
-            _conferenceRepository = new ConferenceRepository(context);
+            await _context.Database.EnsureCreatedAsync();
+
+            _conferenceRepository = new ConferenceRepository(_context);
             _conferenceController = new ConferenceController(_conferenceRepository);
 
             ClaimsPrincipal cp = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -61,17 +57,19 @@ namespace ConferenceMonitorApi
             };
 
             // Act
-            ActionResult<Conference> conferenceCreatedAtActionResponse = await _conferenceController.PublishConference(newConference);
+            ActionResult<Conference> createdAtActionResponse = await _conferenceController.PublishConference(newConference);
 
             // Assert
-            Assert.IsType<CreatedAtActionResult>(conferenceCreatedAtActionResponse.Result);
+            Assert.IsType<CreatedAtActionResult>(createdAtActionResponse.Result);
+
+            await _context.Database.EnsureDeletedAsync();
         }
 
         [Fact]
         public async void PublishConference_InvalidConferencePassed_ReturnsBadRequestObjectResult()
         {
             // Arrange
-            _conferenceRepository = new ConferenceRepository(context);
+            _conferenceRepository = new ConferenceRepository(_context);
             _conferenceController = new ConferenceController(_conferenceRepository);
 
             ClaimsPrincipal cp = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -100,114 +98,132 @@ namespace ConferenceMonitorApi
             _conferenceController.ModelState.AddModelError("Name", "Required");
 
             // Act
-            ActionResult<Conference> conferenceBadRequestResponse = await _conferenceController.PublishConference(newConference);
+            ActionResult<Conference> badRequestObjectResponse = await _conferenceController.PublishConference(newConference);
 
             // Assert
-            Assert.IsType<BadRequestObjectResult>(conferenceBadRequestResponse.Result);
+            Assert.IsType<BadRequestObjectResult>(badRequestObjectResponse.Result);
         }
 
         [Fact]
-        public void GetAllConferences_WhenCalled_ReturnsOkResult()
+        public async void GetAllConferences_WhenCalled_ReturnsOkObjectResult()
         {
             // Arrange
+            await _context.Database.EnsureCreatedAsync();
 
-            _conferenceRepository = new ConferenceRepository(context);
+            _conferenceRepository = new ConferenceRepository(_context);
             _conferenceController = new ConferenceController(_conferenceRepository);
 
+            Conference newConference = new Conference()
+            {
+                Name = "Employ Yourself",
+                Theme = "Staring Your Own Business Matters",
+                Location = "Washington",
+                StartDateAndTime = "2020-03-15 08:00 AM",
+                EndDateAndTime = "2020-03-22 06:00 PM",
+                Description = "An annual conference for inspiring entrepreneurs",
+                Organizer = "Business Founders Corp",
+                TicketPrice = 500
+            };
+
+            await _conferenceRepository.CreateAsync(newConference);
+
             // Act
-            ActionResult<Conference> conferencesOkResult = _conferenceController.GetAllConferences().Result;
+            ActionResult<Conference> okObjectResponse = _conferenceController.GetAllConferences().Result;
 
             // Assert
-            Assert.IsType<OkObjectResult>(conferencesOkResult.Result);
+            Assert.IsType<OkObjectResult>(okObjectResponse.Result);
+
+            await _context.Database.EnsureDeletedAsync();
         }
 
         [Fact]
-        public void GetSingleConference_ExistingConferenceIdPassed_ReturnsOkResult()
+        public async void GetSingleConference_ExistingConferenceIdPassed_ReturnsOkObjectResult()
         {
             // Arrange
-            _conferenceRepository = new ConferenceRepository(context);
+            await _context.Database.EnsureCreatedAsync();
+
+            _conferenceRepository = new ConferenceRepository(_context);
             _conferenceController = new ConferenceController(_conferenceRepository);
 
-            int Id = 2;
+            Conference newConference = new Conference()
+            {
+                Name = "Employ Yourself",
+                Theme = "Staring Your Own Business Matters",
+                Location = "Washington",
+                StartDateAndTime = "2020-03-15 08:00 AM",
+                EndDateAndTime = "2020-03-22 06:00 PM",
+                Description = "An annual conference for inspiring entrepreneurs",
+                Organizer = "Business Founders Corp",
+                TicketPrice = 500
+            };
+
+            await _conferenceRepository.CreateAsync(newConference);
+
+            int Id = 1;
 
             // Act
-            ActionResult<Conference> conferenceOkResult = _conferenceController.GetSingleConference(Id).Result;
+            ActionResult<Conference> okObjectResponse = _conferenceController.GetSingleConference(Id).Result;
 
             // Assert
-            Assert.IsType<OkObjectResult>(conferenceOkResult.Result);
+            Assert.IsType<OkObjectResult>(okObjectResponse.Result);
+
+            await _context.Database.EnsureDeletedAsync();
         }
 
         [Fact]
-        public void GetSingleConference_UnkownConferenceIdPassed_ReturnsNotFoundResult()
+        public async void GetSingleConference_UnkownConferenceIdPassed_ReturnsNotFoundObjectResult()
         {
             // Arrange
-            _conferenceRepository = new ConferenceRepository(context);
+            await _context.Database.EnsureCreatedAsync();
+
+            _conferenceRepository = new ConferenceRepository(_context);
             _conferenceController = new ConferenceController(_conferenceRepository);
 
-            int Id = 33;
+            int Id = 1;
 
             // Act
-            ActionResult<Conference> conferenceNotFoundResult = _conferenceController.GetSingleConference(Id).Result;
+            ActionResult<Conference> notFoundObjectResponse = _conferenceController.GetSingleConference(Id).Result;
 
             // Assert
-            Assert.IsType<NotFoundObjectResult>(conferenceNotFoundResult.Result);
+            Assert.IsType<NotFoundObjectResult>(notFoundObjectResponse.Result);
+
+            await _context.Database.EnsureDeletedAsync();
         }
 
-        // [Fact]
-        // public void Add_ValidObjectPassed_ReturnedResponseHasCreatedItem()
-        // {
-        //     // Arrange
-        //     _conferenceRepository = new ConferenceRepository(context);
-        //     _conferenceController = new ConferenceController(_conferenceRepository);
+        [Fact]
+        public async void GetSingleConference_ExistingConferenceIdPassed_ReturnsRightConference()
+        {
+            // Arrange
+            await _context.Database.EnsureCreatedAsync();
 
-        //     ClaimsPrincipal cp = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        //     {
-        //         new Claim("UserID", "1"),
-        //         new Claim("UserEmail", "publisher@email.com")
-        //     }));
+            _conferenceRepository = new ConferenceRepository(_context);
+            _conferenceController = new ConferenceController(_conferenceRepository);
 
+            Conference newConference = new Conference()
+            {
+                Name = "Employ Yourself",
+                Theme = "Staring Your Own Business Matters",
+                Location = "Washington",
+                StartDateAndTime = "2020-03-15 08:00 AM",
+                EndDateAndTime = "2020-03-22 06:00 PM",
+                Description = "An annual conference for inspiring entrepreneurs",
+                Organizer = "Business Founders Corp",
+                TicketPrice = 500
+            };
 
-        //     _conferenceController.ControllerContext = new ControllerContext()
-        //     {
-        //         HttpContext = new DefaultHttpContext() { User = cp }
-        //     };
+            await _conferenceRepository.CreateAsync(newConference);
 
-        //     Conference newConference = new Conference()
-        //     {
-        //         Name = "Employ Yourself",
-        //         Theme = "Staring Your Own Business Matters",
-        //         Location = "Washington",
-        //         StartDateAndTime = "2020-03-15 08:00 AM",
-        //         EndDateAndTime = "2020-03-22 06:00 PM",
-        //         Description = "An annual conference for inspiring entrepreneurs",
-        //         Organizer = "Business Founders Corp",
-        //         TicketPrice = 500
-        //     };
+            int Id = 1;
 
-        //     // Act
-        //     var createdResponse = _conferenceController.PublishConference(newConference).Result;
-        //     var publishedConference = createdResponse.Value as Conference;
+            // Act
+            ActionResult<Conference> okObjectResponse = await _conferenceController.GetSingleConference(Id);
+            OkObjectResult conference = okObjectResponse.Result as OkObjectResult;
 
-        //     // Assert
-        //     Assert.IsType<Conference>(publishedConference);
-        //     Assert.Equal("Guinness Original 6 Pack", publishedConference.Name);
-        // }
+            // Assert
+            Assert.IsType<Conference>(conference.Value);
+            Assert.Equal(Id, (conference.Value as Conference).Id);
 
-        // [Fact]
-        // public void GetSingleConference_ExistingConferenceIdPassed_ReturnsRightConference()
-        // {
-        //     // Arrange
-        //     _conferenceRepository = new ConferenceRepository(context);
-        //     _conferenceController = new ConferenceController(_conferenceRepository);
-
-        //     int Id = 2;
-
-        //     // Act
-        //     ActionResult<Conference> conferenceOkResult = _conferenceController.GetSingleConference(Id).Result;
-
-        //     // Assert
-        //     Assert.IsType<Conference>(conferenceOkResult.Value);
-        //     // Assert.Equal(Id, (conferenceOkResult.Value as Conference).Id);
-        // }
+            await _context.Database.EnsureDeletedAsync();
+        }
     }
 }
