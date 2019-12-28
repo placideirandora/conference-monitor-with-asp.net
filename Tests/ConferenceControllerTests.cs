@@ -12,21 +12,29 @@ namespace ConferenceMonitorApi
 {
     public class ConferenceControllerTest
     {
+        // Define a SQLite InMemory database for testing purpose
         static SqliteConnectionStringBuilder sCSB = new SqliteConnectionStringBuilder { DataSource = ":memory" };
         static SqliteConnection sc = new SqliteConnection(sCSB.ToString());
+
+        // Pass the database to the custom context 
         static DbContextOptions<DatabaseContext> options = new DbContextOptionsBuilder<DatabaseContext>()
             .UseSqlite(sc)
             .Options;
-
         DatabaseContext _context = new DatabaseContext(options);
-
+        
+        // Define fields for accessing the Conference Repository and Controller
         IConferenceRepository _conferenceRepository;
         ConferenceController _conferenceController;
-
+        
+        // Individual test case
         [Fact]
         public async void PublishConference_ValidConferencePassed_ReturnsCreatedAtActionResult()
-        {
+        {      
+            // Implement the Triple A testing pattern
+
             // Arrange
+
+            // Create the database 
             await _context.Database.EnsureCreatedAsync();
 
             _conferenceRepository = new ConferenceRepository(_context);
@@ -62,6 +70,7 @@ namespace ConferenceMonitorApi
             // Assert
             Assert.IsType<CreatedAtActionResult>(createdAtActionResponse.Result);
 
+            // Destroy the database after testing the specific case
             await _context.Database.EnsureDeletedAsync();
         }
 
