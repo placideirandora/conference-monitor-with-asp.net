@@ -80,6 +80,20 @@ namespace ConferenceMonitorApi
                         Name = "Authorization",
                         Type = SecuritySchemeType.ApiKey 
                     });
+                
+                option.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                { 
+                    new OpenApiSecurityScheme 
+                    { 
+                    Reference = new OpenApiReference 
+                    { 
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer" 
+                    } 
+                    },
+                    new string[] { } 
+                    } 
+                });
 
                     // Set the comments path for the Swagger JSON and UI.
                     string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
