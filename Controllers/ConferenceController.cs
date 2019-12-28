@@ -85,7 +85,7 @@ namespace ConferenceMonitorApi.Controllers
                 return NotFound(new { message = "Conference not found" });
             }
 
-            return Ok(new { message = "Conference found", conference });
+            return Ok(conference);
         }
 
         /// <summary>
