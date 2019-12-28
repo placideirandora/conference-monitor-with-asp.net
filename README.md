@@ -54,3 +54,9 @@ $ dotnet watch run (start the app in watch mode)
 |  GET  | /api/v1/Conference/{Id} | Retrieve a Specific Conference | Public |
 |  PUT  | /api/v1/Conference/{Id} | Update a Specific Conference | Protected |
 |  DELETE | /api/v1/Conference/{Id} | Delete a Specific Conference | Protected |
+
+### Unit Tests
+
+```
+$ Run the following command with VSCode Terminal: dotnet test
+```
