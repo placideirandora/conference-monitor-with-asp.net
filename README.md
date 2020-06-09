@@ -6,7 +6,7 @@ A back-end RESTful Web API for publishing and managing conferences.
 ### Clone The Project
 
 ```
-$ git clone https://github.com/placideirandora/conference-monitor-with-asp.net
+$ git clone https://github.com/placiderapson/conference-monitor-with-asp.net
 ```
 
 ### Install C# Extension
